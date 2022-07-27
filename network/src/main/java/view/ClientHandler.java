@@ -257,6 +257,8 @@ public class ClientHandler extends Thread{
                         return CityController.getInstance().citizenInformation(request);
                     case "tile citizen information":
                         return CityController.getInstance().tileCitizenInformation(request);
+                    case "city products":
+                        return CityController.getInstance().cityProducts(request);
                 }
         }
         return null;

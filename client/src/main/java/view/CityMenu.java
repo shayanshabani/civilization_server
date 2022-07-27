@@ -56,22 +56,6 @@ public class CityMenu {
                 }
             }
             // show all cities in the game
-            else if (cityInput.equals("show all cities")) {
-                System.out.println("**********");
-                int index = 1;
-//                for (User player : players) {
-//                    if (player.getCities() != null) {
-//                        for (City city : player.getCities()) {
-//                            System.out.println(index + "- " + city.getName());
-//                            index++;
-//                        }
-//                    }
-//                    else
-//                        System.out.println(player.getUsername() + " do not have any city!");
-//                    System.out.println("**********");
-//                    index = 1;
-//                }
-            }
             else
                 System.out.println("invalid command");
         }
@@ -133,27 +117,12 @@ public class CityMenu {
             else if (cityInput.trim().equals("new production")) {
 
                 setProduction(indexOfCity, username, scanner);
-
-//                if (!city.isProductStatus())
-//                    setProduction(city, user, scanner);
-//                else
-//                    System.out.println("you are already producing something");
             }
             else if (cityInput.trim().equals("resume production")) {
-//                if (city.getCurrentProduction() != null) {
-//                    city.setProductStatus(true);
-//                    System.out.println("production running");
-//                }
-//                else
-//                    System.out.println("city do not have production in queue");
+
             }
             else if (cityInput.trim().equals("terminate current production")) {
-//                if (city.isProductStatus()) {
-//                    // producing eliminated
-//                    city.setProductStatus(false);
-//                }
-//                else
-//                    System.out.println("you don't produce anything");
+
             }
             else if (cityInput.trim().equals("set citizens")){
                 alternativeFunction(scanner, indexOfCity, username);
@@ -168,10 +137,18 @@ public class CityMenu {
 
     private void setProduction(int indexOfCity, String username, Scanner scanner) {
         int index = 1;
-//        for (Product product : city.getProducts()) {
-//            System.out.println(index + "- " + product.getName() + " cost : " + product.getTurnCost());
-//            index++;
-//        }
+        Request request = new Request();
+        request.setMenu("city menu");
+        request.setAction("city products");
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("username", username);
+        parameters.put("index of city", String.valueOf(indexOfCity));
+        request.setParameters(parameters);
+        Response response = NetworkController.getInstance().sendRequest(request);
+        for (String notification : response.getNotifications()) {
+            System.out.println(notification);
+        }
+
         String productInput;
         System.out.println("you are in production bar");
         while (true) {
@@ -180,40 +157,40 @@ public class CityMenu {
                 return;
             else if (Pattern.matches("\\d+", productInput)) {
                 int numberOfProduct = Integer.parseInt(productInput);
-//                if (numberOfProduct <= city.getProducts().size() && numberOfProduct >= 1) {
-//
-//                    Request request = new Request();
-//                    request.setMenu("city menu");
-//                    request.setAction("set production");
-//                    HashMap<String, String> parameters = new HashMap<>();
-//                    parameters.put("index", String.valueOf(numberOfProduct));
-//                    parameters.put("cheat", String.valueOf(false));
-//                    request.setParameters(parameters);
-//
-//                    Response response = NetworkController.getInstance().sendRequest(request);
-//                    System.out.println(response.getMessage());
-//                }
-//                else
-//                    System.out.println("invalid number");
+                if (numberOfProduct >= 1) {
+
+                    request = new Request();
+                    request.setMenu("city menu");
+                    request.setAction("set production");
+                    parameters = new HashMap<>();
+                    parameters.put("index", String.valueOf(numberOfProduct));
+                    parameters.put("cheat", String.valueOf(false));
+                    request.setParameters(parameters);
+
+                    response = NetworkController.getInstance().sendRequest(request);
+                    System.out.println(response.getMessage());
+                }
+                else
+                    System.out.println("invalid number");
             }
             else if ((matcher = RegexEnums.getMatcher(productInput, RegexEnums.ADD_PRODUCT1)) != null ||
                     (matcher = RegexEnums.getMatcher(productInput, RegexEnums.ADD_PRODUCT2)) != null) {
                 index = Integer.parseInt(matcher.group("index"));
-//                if (index >= 1 && index <= city.getProducts().size()) {
-//
-//                    Request request = new Request();
-//                    request.setMenu("city menu");
-//                    request.setAction("set production");
-//                    HashMap<String, String> parameters = new HashMap<>();
-//                    parameters.put("index", String.valueOf(index));
-//                    parameters.put("cheat", String.valueOf(true));
-//                    request.setParameters(parameters);
-//
-//                    Response response = NetworkController.getInstance().sendRequest(request);
-//                    System.out.println(response.getMessage());
-//                }
-//                else
-//                    System.out.println("invalid number");
+                if (index >= 1) {
+
+                    request = new Request();
+                    request.setMenu("city menu");
+                    request.setAction("set production");
+                    parameters = new HashMap<>();
+                    parameters.put("index", String.valueOf(index));
+                    parameters.put("cheat", String.valueOf(true));
+                    request.setParameters(parameters);
+
+                    response = NetworkController.getInstance().sendRequest(request);
+                    System.out.println(response.getMessage());
+                }
+                else
+                    System.out.println("invalid number");
             }
             else
                 System.out.println("invalid command");

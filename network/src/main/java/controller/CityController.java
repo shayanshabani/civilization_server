@@ -308,5 +308,23 @@ public class CityController {
         return response;
     }
 
+    public Response cityProducts(Request request) {
+        String username = request.getParameters().get("username");
+        User user = UsersController.getInstance().getUserByUsername(username);
+        int indexOfCity = Integer.parseInt(request.getParameters().get("index of city"));
+        City city = user.getCities().get(indexOfCity);
+        Response response = new Response();
+        ArrayList<String> notifications = new ArrayList<>();
+
+        int index = 1;
+
+        for (Product product : city.getProducts()) {
+            notifications.add(index + "- " + product.getName() + " cost : " + product.getTurnCost());
+            index++;
+        }
+        response.setNotifications(notifications);
+        return response;
+    }
+
 
 }
