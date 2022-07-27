@@ -92,7 +92,8 @@ public class CityMenu {
                 HashMap<String, String> parameters = new HashMap<>();
                 parameters.put("username", username);
                 parameters.put("index of city", String.valueOf(indexOfCity));
-
+                request.setMenu("city menu");
+                request.setAction("nearby tiles information");
                 request.setParameters(parameters);
                 Response response = NetworkController.getInstance().sendRequest(request);
                 int max = Integer.parseInt(response.getParameters().get("max"));
@@ -130,6 +131,9 @@ public class CityMenu {
                 }
             }
             else if (cityInput.trim().equals("new production")) {
+
+                setProduction(indexOfCity, username, scanner);
+
 //                if (!city.isProductStatus())
 //                    setProduction(city, user, scanner);
 //                else
@@ -152,7 +156,7 @@ public class CityMenu {
 //                    System.out.println("you don't produce anything");
             }
             else if (cityInput.trim().equals("set citizens")){
-                //alternativeFunction(scanner, city);
+                alternativeFunction(scanner, indexOfCity, username);
             }
             else if (cityInput.trim().equals("city information")) {
                 //cityInformation(city);
@@ -216,21 +220,25 @@ public class CityMenu {
         }
     }
 
-    public void alternativeFunction(Scanner scanner, City city) {
+    public void alternativeFunction(Scanner scanner, int indexOfCity, String username) {
         int index = 1;
         System.out.println("choose one of the citizens number");
 
-        for (Citizen citizen : city.getCitizens()) {
-            if (citizen.isWorking()){
-                System.out.println(index + ": working on Tile -> x " + citizen.getTile().getX() + " y " + citizen.getTile().getY());
-            } else {
-                System.out.println(index + ": unemployed");
-            }
-            index++;
+        Request request = new Request();
+        request.setMenu("city menu");
+        request.setAction("citizen information");
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("username", username);
+        parameters.put("index of city", String.valueOf(indexOfCity));
+        request.setParameters(parameters);
+        Response response = NetworkController.getInstance().sendRequest(request);
+        for (String notification : response.getNotifications()) {
+            System.out.println(notification);
         }
         String input;
         System.out.println("just numbers, back to return to city panel");
-        Citizen citizen;
+        int max = Integer.parseInt(response.getParameters().get("max"));
+
         while (true) {
             input = scanner.nextLine();
             if (input.equals("back")) {
@@ -239,8 +247,7 @@ public class CityMenu {
             }
             else if (Pattern.matches("\\d+", input)) {
                 index = Integer.parseInt(input);
-                if (index >= 1 && index <= city.getCitizens().size()) {
-                    citizen = city.getCitizens().get(index - 1);
+                if (index >= 1 && index <= max) {
                     break;
                 }
                 else
@@ -249,29 +256,22 @@ public class CityMenu {
             else
                 System.out.println("invalid command, just put numbers");
         }
+        int indexOfCitizen = index - 1;
 
         index = 1;
 
         System.out.println("choose one tile number to employ the citizen on the tile");
-        for (Tile ownerShipTile : city.getOwnerShipTiles()) {
-            if (!ownerShipTile.isCitizenExist()) {
-                System.out.println(Colors.PURPLE + index + "- Tile coordination : x " + ownerShipTile.getX()
-                        + " y " + ownerShipTile.getY() + Colors.RESET);
-                if (ownerShipTile.getFeature() != null) {
-                    System.out.println("tile information -> foodRate : "
-                            + (ownerShipTile.getTerrain().getFoodRate() + ownerShipTile.getFeature().getFoodRate())
-                            + " *** goldRate : "
-                            + (ownerShipTile.getTerrain().getGoldRate() + ownerShipTile.getFeature().getGoldRate())
-                            + " *** productionRate : "
-                            + (ownerShipTile.getTerrain().getProductionRate() + ownerShipTile.getFeature().getProductionRate()));
-                } else
-                    System.out.println("tile information -> foodRate : "
-                            + ownerShipTile.getTerrain().getFoodRate() + " *** goldRate : "
-                            + ownerShipTile.getTerrain().getGoldRate() + " *** productionRate : "
-                            + ownerShipTile.getTerrain().getProductionRate());
-                index++;
-            }
+        request = new Request();
+        request.setMenu("city menu");
+        request.setAction("tile citizen information");
+        parameters = new HashMap<>();
+        parameters.put("username", username);
+        parameters.put("index of city", String.valueOf(indexOfCity));
+        response = NetworkController.getInstance().sendRequest(request);
+        for (String notification : response.getNotifications()) {
+            System.out.println(notification);
         }
+        max = Integer.parseInt(request.getParameters().get("max"));
 
         while (true) {
             input = scanner.nextLine();
@@ -281,8 +281,8 @@ public class CityMenu {
             }
             else if (Pattern.matches("\\d+", input)) {
                 index = Integer.parseInt(input);
-                if (index >= 1 && index <= city.getOwnerShipTiles().size()) {
-                    setCitizen(city.getOwner().getUsername(), city.getOwner().getCities().indexOf(city), index - 1, city.getCitizens().indexOf(citizen));
+                if (index >= 1 && index <= max) {
+                    setCitizen(username, indexOfCity, index - 1, indexOfCitizen);
                     return;
                 }
                 else

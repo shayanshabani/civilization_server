@@ -2,6 +2,7 @@ package controller;
 
 
 import model.*;
+import view.Colors;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -244,6 +245,64 @@ public class CityController {
         for (City city : user.getCities()) {
             notifications.add(index + "- " + city.getName());
             index++;
+        }
+        response.setNotifications(notifications);
+        return response;
+    }
+
+    public Response citizenInformation(Request request) {
+        String username = request.getParameters().get("username");
+        User user = UsersController.getInstance().getUserByUsername(username);
+        int indexOfCity = Integer.parseInt(request.getParameters().get("index of city"));
+        City city = user.getCities().get(indexOfCity);
+        int index = 1;
+        Response response = new Response();
+        ArrayList<String> notifications = new ArrayList<>();
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("max", String.valueOf(city.getCitizens().size()));
+        response.setParameters(parameters);
+        for (Citizen citizen : city.getCitizens()) {
+            if (citizen.isWorking()){
+                notifications.add(index + ": working on Tile -> x " + citizen.getTile().getX() + " y " + citizen.getTile().getY());
+            } else {
+                notifications.add(index + ": unemployed");
+            }
+            index++;
+        }
+        response.setNotifications(notifications);
+        return response;
+    }
+
+    public Response tileCitizenInformation(Request request) {
+        int index = 1;
+        String username = request.getParameters().get("username");
+        User user = UsersController.getInstance().getUserByUsername(username);
+        int indexOfCity = Integer.parseInt(request.getParameters().get("index of city"));
+        City city = user.getCities().get(indexOfCity);
+
+        Response response = new Response();
+        ArrayList<String> notifications = new ArrayList<>();
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("max", String.valueOf(city.getOwnerShipTiles().size()));
+        response.setParameters(parameters);
+        for (Tile ownerShipTile : city.getOwnerShipTiles()) {
+            if (!ownerShipTile.isCitizenExist()) {
+                notifications.add(Colors.PURPLE + index + "- Tile coordination : x " + ownerShipTile.getX()
+                        + " y " + ownerShipTile.getY() + Colors.RESET);
+                if (ownerShipTile.getFeature() != null) {
+                    notifications.add("tile information -> foodRate : "
+                            + (ownerShipTile.getTerrain().getFoodRate() + ownerShipTile.getFeature().getFoodRate())
+                            + " *** goldRate : "
+                            + (ownerShipTile.getTerrain().getGoldRate() + ownerShipTile.getFeature().getGoldRate())
+                            + " *** productionRate : "
+                            + (ownerShipTile.getTerrain().getProductionRate() + ownerShipTile.getFeature().getProductionRate()));
+                } else
+                    notifications.add("tile information -> foodRate : "
+                            + ownerShipTile.getTerrain().getFoodRate() + " *** goldRate : "
+                            + ownerShipTile.getTerrain().getGoldRate() + " *** productionRate : "
+                            + ownerShipTile.getTerrain().getProductionRate());
+                index++;
+            }
         }
         response.setNotifications(notifications);
         return response;

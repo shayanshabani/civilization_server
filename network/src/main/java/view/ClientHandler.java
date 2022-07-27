@@ -226,8 +226,6 @@ public class ClientHandler extends Thread{
                         return UnitController.getInstance().pauseImprovement(request, ServerController.getInstance().getMap());
                     case "resume improvement":
                         return UnitController.getInstance().resumeImprovement(request, ServerController.getInstance().getMap());
-                    case "nearby tiles information":
-                        return CityController.getInstance().nearbyTilesInformation(request);
                     case "improvement information":
                         return GameController.getInstance().improvementInformation(request);
                     case "add improvement":
@@ -252,7 +250,13 @@ public class ClientHandler extends Thread{
                     case "set citizen":
                         return CityController.getInstance().setCitizen(request);
                     case "user cities":
-
+                        return CityController.getInstance().userCities(request);
+                    case "nearby tiles information":
+                        return CityController.getInstance().nearbyTilesInformation(request);
+                    case "citizen information":
+                        return CityController.getInstance().citizenInformation(request);
+                    case "tile citizen information":
+                        return CityController.getInstance().tileCitizenInformation(request);
                 }
         }
         return null;
