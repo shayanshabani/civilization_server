@@ -23,11 +23,6 @@ public class ResearchMenu {
         System.out.println("to terminate current tech press -terminate current-");
         String researchInput;
 
-        System.out.println("player has done this technologies");
-        for (Technology technology : user.getTechnologies()) {
-            System.out.println(technology.getName());
-        }
-
         while (true) {
             researchInput = scanner.nextLine();
             if (researchInput.equals("research exit"))
@@ -57,18 +52,15 @@ public class ResearchMenu {
 
     public void selectTech(String username, Scanner scanner) {
 
-        ArrayList<Technology> technologies = techController.getUserResearches(user);
-        int index = 1;
-        for (Technology technology : technologies) {
-            System.out.println(index + "- " + technology.getName());
-            if (technology.getGivenImprovement() != null) {
-                System.out.println("given improvements : ");
-                for (Improvement improvement : technology.getGivenImprovement())
-                    System.out.println("name: " + improvement.getName() + " | production: " + improvement.getProductionRate() + " | food: " + improvement.getFoodRate() + " | gold: " + improvement.getGoldRate());
-
-            }
-            index++;
+        Request request = new Request();
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("username", username);
+        request.setParameters(parameters);
+        Response response = NetworkController.getInstance().sendRequest(request);
+        for (String notification : response.getNotifications()) {
+            System.out.println(notification);
         }
+        int index;
         System.out.println("choose an index | <tech exit> to get out");
         String techInput;
         boolean researchBar = true;
@@ -78,7 +70,7 @@ public class ResearchMenu {
                 researchBar = false;
             else if (Pattern.matches("[\\d+]", techInput)) {
                 index = Integer.parseInt(techInput);
-                if (index >= 1 && index <= technologies.size()) {
+                if (index >= 1) {
                     // choose the tech and research on it
                     addResearch(username, index, false);
                 }
@@ -89,7 +81,7 @@ public class ResearchMenu {
             // cheat code
             else if ((matcher = RegexEnums.getMatcher(techInput, RegexEnums.ADD_RESEARCH1)) != null || (matcher = RegexEnums.getMatcher(techInput, RegexEnums.ADD_RESEARCH2)) != null) {
                 index = Integer.parseInt(matcher.group("index"));
-                if (index >= 1 && index <= technologies.size()) {
+                if (index >= 1) {
                     addResearch(username, index, true);
                     researchBar = false;
                 }
