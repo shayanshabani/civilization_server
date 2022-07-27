@@ -86,6 +86,7 @@ public class ClientHandler extends Thread{
             } catch (IOException e) {
                 System.out.println("client disconnected");
                 receiver.kickClient(this);
+                return;
             }
         }
     }
@@ -134,6 +135,7 @@ public class ClientHandler extends Thread{
                         if (Boolean.parseBoolean(response.getParameters().get("valid"))) {
                             //set players in receiver
                             receiver.setPlayers(new Gson().fromJson(response.getParameters().get("players"), new TypeToken<List<User>>(){}.getType()));
+                            MapController.getInstance().firstSetOfSettlers(receiver.getPlayers(), ServerController.getInstance().getMap());
                             response.getParameters().remove("players");
                             //initialize client handler of players
                             LinkedList<ClientHandler> clientHandlers = new LinkedList<>();
@@ -497,5 +499,42 @@ public class ClientHandler extends Thread{
                     + "  " + Colors.RESET + mapController.riverFinder(map.getTileBoard()[2 * i + 1][map.getWidth() - 1], 1) + "\n");
         else stringBuilder.append("\n");
         return stringBuilder.toString();
+    }
+
+    public DataInputStream getDataInputStream() {
+        return dataInputStream;
+    }
+
+    public void setDataInputStream(DataInputStream dataInputStream) {
+        this.dataInputStream = dataInputStream;
+    }
+
+    public DataOutputStream getDataOutputStream() {
+        return dataOutputStream;
+    }
+
+    public void setDataOutputStream(DataOutputStream dataOutputStream) {
+        this.dataOutputStream = dataOutputStream;
+    }
+
+    public Socket getSocket() {
+        return socket;
+    }
+
+    public void setSocket(Socket socket) {
+        this.socket = socket;
+    }
+
+    public boolean sendRequest(String output) {
+        try {
+            dataOutputStream.writeUTF(output);
+            dataOutputStream.flush();
+            String input = dataInputStream.readUTF();
+            return input.equals("yes");
+            //process
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

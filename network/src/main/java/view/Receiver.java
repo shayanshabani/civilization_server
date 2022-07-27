@@ -17,13 +17,11 @@ public class Receiver {
     private LinkedList<ClientHandler> clientHandlers = new LinkedList<>();
     private ArrayList<User> players;
     private LinkedList<ClientHandler> clientHandlersPlayers = new LinkedList<>();
-    private TechController techController;
-
+    private TechController techController = TechController.getInstance(UsersController.getInstance().readFromJsonGraph(), UsersController.getInstance().readFromJsonTech());
     public Receiver() {
         ServerController.getInstance().initGame();
         map = ServerController.getInstance().getMap();
         GameController.getInstance().assignNeighbor(map);
-        TechController.getInstance(UsersController.getInstance().readFromJsonGraph(), UsersController.getInstance().readFromJsonTech());
     }
 
     public void run(int SERVER_PORT) {
@@ -89,5 +87,18 @@ public class Receiver {
 
     public void setTechController(TechController techController) {
         this.techController = techController;
+    }
+
+    public void sendToClient(String input, ClientHandler sender, LinkedList<ClientHandler> clientHandlers) {
+        ArrayList<Boolean> acceptance = new ArrayList<>();
+        for (ClientHandler clientHandler : clientHandlers) {
+            acceptance.add(clientHandler.sendRequest("hello"));
+        }
+        if (acceptance.contains(Boolean.FALSE)) {
+            //ruin
+        }
+        else {
+            //start the game
+        }
     }
 }

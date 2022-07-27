@@ -56,6 +56,8 @@ public class ResearchMenu {
         HashMap<String, String> parameters = new HashMap<>();
         parameters.put("username", username);
         request.setParameters(parameters);
+        request.setMenu("technology menu");
+        request.setAction("select tech");
         Response response = NetworkController.getInstance().sendRequest(request);
         for (String notification : response.getNotifications()) {
             System.out.println(notification);

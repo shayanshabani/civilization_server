@@ -15,7 +15,6 @@ public class TechController {
     private TechController(int[][] technologiesGraph, ArrayList<Technology> technologies) {
         this.technologiesGraph = technologiesGraph;
         this.technologies = technologies;
-
     }
 
     public static TechController getInstance(int[][] technologiesGraph, ArrayList<Technology> technologies) {
@@ -129,7 +128,7 @@ public class TechController {
         String username = request.getParameters().get("username");
         User user = UsersController.getInstance().getUserByUsername(username);
         ArrayList<String> notifications = new ArrayList<>();
-        ArrayList<Technology> technologies = techController.getUserResearches(user);
+        ArrayList<Technology> technologies = getUserResearches(user);
         int index = 1;
         for (Technology technology : technologies) {
             notifications.add(index + "- " + technology.getName());

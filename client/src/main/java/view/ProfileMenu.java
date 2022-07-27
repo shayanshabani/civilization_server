@@ -52,7 +52,7 @@ public class ProfileMenu {
             else if ((matcher = RegexEnums.getMatcher(input, RegexEnums.CHANGE_NICKNAME1)) != null ||
                     (matcher = RegexEnums.getMatcher(input, RegexEnums.CHANGE_NICKNAME2)) != null) {
                 String nickname = matcher.group("nickname");
-
+                request.setAction("change nickname");
                 parameters.put("new nickname", nickname);
                 parameters.put("username", username);
                 request.setParameters(parameters);
@@ -70,6 +70,7 @@ public class ProfileMenu {
                 parameters.put("new password", newPassword);
                 parameters.put("old password", currentPassword);
                 request.setParameters(parameters);
+                request.setAction("change password");
                 Response response = NetworkController.getInstance().sendRequest(request);
                 System.out.println(response.getMessage());
             }

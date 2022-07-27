@@ -308,13 +308,12 @@ public class PlayGame {
             else if ((matcher = RegexEnums.getMatcher(tileInput, RegexEnums.CITY1)) != null ||
                     (matcher = RegexEnums.getMatcher(tileInput, RegexEnums.CITY2)) != null) {
 
-                int xDestination = Integer.parseInt(matcher.group("x"));
-                int yDestination = Integer.parseInt(matcher.group("y"));
+
 
                 request.setAction("place city");
                 HashMap<String, String> parameters = new HashMap<>();
-                parameters.put("xDestination", String.valueOf(xDestination));
-                parameters.put("yDestination", String.valueOf(yDestination));
+                parameters.put("xDestination", String.valueOf(xOrigin));
+                parameters.put("yDestination", String.valueOf(yOrigin));
                 parameters.put("username", username);
                 parameters.put("name", matcher.group("city"));
 
