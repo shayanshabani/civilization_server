@@ -49,7 +49,9 @@ public class ClientHandler extends Thread{
                     dataOutputStream.flush();
                 }
                 else {
-                    dataOutputStream.writeUTF("please wait...");
+                    Response response = new Response();
+                    response.setMessage("please wait...");
+                    dataOutputStream.writeUTF(response.toJson());
                     dataOutputStream.flush();
                 }
             } catch (IOException e) {
@@ -110,6 +112,7 @@ public class ClientHandler extends Thread{
                         if (Boolean.parseBoolean(response.getParameters().get("valid"))) {
                             //set players in receiver
                             receiver.setPlayers(new Gson().fromJson(response.getParameters().get("players"), new TypeToken<List<User>>(){}.getType()));
+                            response.getParameters().remove("players");
                             //initialize client handler of players
                             LinkedList<ClientHandler> clientHandlers = new LinkedList<>();
                             for (ClientHandler clientHandler : receiver.getClientHandlers()) {
@@ -124,6 +127,7 @@ public class ClientHandler extends Thread{
                                     clientHandler.setPlaying(false);
                             }
                         }
+                        response.getParameters().remove("valid");
                         return response;
                     case "next turn":
                         response = GameController.getInstance().nextTurn(request);
