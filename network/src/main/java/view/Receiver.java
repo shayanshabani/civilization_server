@@ -17,6 +17,7 @@ public class Receiver {
     private LinkedList<ClientHandler> clientHandlers = new LinkedList<>();
     private ArrayList<User> players;
     private LinkedList<ClientHandler> clientHandlersPlayers = new LinkedList<>();
+    private TechController techController;
 
     public Receiver() {
         ServerController.getInstance().initGame();
@@ -80,5 +81,13 @@ public class Receiver {
 
     public void setClientHandlersPlayers(LinkedList<ClientHandler> clientHandlersPlayers) {
         this.clientHandlersPlayers = clientHandlersPlayers;
+    }
+
+    public TechController getTechController() {
+        return techController;
+    }
+
+    public void setTechController(TechController techController) {
+        this.techController = techController;
     }
 }

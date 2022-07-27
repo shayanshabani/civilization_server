@@ -1,10 +1,10 @@
 package controller;
 
-import model.Technology;
-import model.User;
+import model.*;
 
 
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class TechController {
     private final ArrayList<Technology> technologies;
@@ -66,6 +66,84 @@ public class TechController {
             }
         }
         return technologies;
+    }
+
+    public Response showTree() {
+
+        Response response = new Response();
+        ArrayList<String> notifications = new ArrayList<>();
+
+        ArrayList<Technology> prerequisites;
+        notifications.add("**********");
+        for (Technology ancientTechnology : getTechnologies()) {
+            notifications.add(ancientTechnology.getName() + " :");
+            if (ancientTechnology.getGivenUnits() != null) {
+                notifications.add("given units :");
+                for (Unit givenUnit : ancientTechnology.getGivenUnits())
+                    notifications.add(givenUnit.getName());
+
+            }
+            if (ancientTechnology.getGivenImprovement() != null) {
+                notifications.add("given improvements :");
+                for (Improvement improvement : ancientTechnology.getGivenImprovement())
+                    notifications.add(improvement.getName());
+
+            }
+            prerequisites = getPrerequisitesTech(ancientTechnology);
+            if (prerequisites.size() >= 1) {
+                notifications.add("prerequisites :");
+                for (Technology prerequisite : prerequisites)
+                    notifications.add(prerequisite.getName());
+
+            }
+            else
+                notifications.add("this technology do not have any prerequisites");
+            notifications.add("**********");
+        }
+        response.setNotifications(notifications);
+        return response;
+    }
+
+    public Response addResearch(Request request) {
+        String username = request.getParameters().get("username");
+        User user = UsersController.getInstance().getUserByUsername(username);
+        boolean cheat = Boolean.parseBoolean(request.getParameters().get("cheat"));
+        int indexOfTech = Integer.parseInt(request.getParameters().get("index of technology"));
+        if (cheat) {
+            user.setResearchTurnLeft(1);
+            user.setResearching(true);
+            user.setCurrentTechnology(technologies.get(indexOfTech - 1));
+            GameController.getInstance().userTurnResearch(user);
+        }
+        else {
+            user.setResearching(true);
+            user.setCurrentTechnology(technologies.get(indexOfTech - 1));
+            user.setResearchTurnLeft(technologies.get(indexOfTech - 1).getSciencePrice());
+        }
+        Response response = new Response();
+        response.setMessage("successfully!");
+        return response;
+    }
+
+    public Response selectTech(Request request) {
+        String username = request.getParameters().get("username");
+        User user = UsersController.getInstance().getUserByUsername(username);
+        ArrayList<String> notifications = new ArrayList<>();
+        ArrayList<Technology> technologies = techController.getUserResearches(user);
+        int index = 1;
+        for (Technology technology : technologies) {
+            notifications.add(index + "- " + technology.getName());
+            if (technology.getGivenImprovement() != null) {
+                notifications.add("given improvements : ");
+                for (Improvement improvement : technology.getGivenImprovement())
+                    notifications.add("name: " + improvement.getName() + " | production: " + improvement.getProductionRate() + " | food: " + improvement.getFoodRate() + " | gold: " + improvement.getGoldRate());
+
+            }
+            index++;
+        }
+        Response response = new Response();
+        response.setNotifications(notifications);
+        return response;
     }
 
 }

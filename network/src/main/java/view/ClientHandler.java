@@ -260,6 +260,15 @@ public class ClientHandler extends Thread{
                     case "city products":
                         return CityController.getInstance().cityProducts(request);
                 }
+            case "technology menu":
+                switch(request.getAction()) {
+                    case "show tree":
+                        return receiver.getTechController().showTree();
+                    case "add research":
+                        return receiver.getTechController().addResearch(request);
+                    case "select tech":
+                        return receiver.getTechController().selectTech(request);
+                }
         }
         return null;
     }
