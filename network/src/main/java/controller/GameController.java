@@ -294,7 +294,7 @@ public class GameController {
             if (building.getName().equals(product.getName())) {
                 Building building1 = new Building(building.getName(), building.getMaintainCost(), building.getCost(), building.getFoodRate(), building.getDefence(), building.getXP(), building.getScienceRate(), building.getHappiness(), building.getRequirement());
                 city.addBuildings(building1);
-                //UserPanel.productDoneNotification(city.getOwner(), city, building);
+                //.productDoneNotification(city.getOwner(), city, building);
                 return;
             }
         }
@@ -860,6 +860,7 @@ public class GameController {
     }
 
     public void nextPlayer(User user) {
+        UnitController.getInstance().repairMovementPoint(user);
         cityTurnProducts(user);
         userTurnResearch(user);
         userTurnWorker(user);
@@ -883,7 +884,7 @@ public class GameController {
         ColorsController colorsController = new ColorsController();
         for (User player : players) {
             color = colorsController.getColorOfUser(player);
-            notifications.add(index + "- username: " + player.getUsername() + " nickname: " + color + player.getNickname() + Colors.RESET);
+            notifications.add(index + "- username: " + player.getUsername() + " nickname: " + color + player.getNickname() + " rank : " + player.getRankInLeaderboard() + " last seen online : " + player.getLastOnline() + Colors.RESET);
             index++;
         }
         response.setNotifications(notifications);

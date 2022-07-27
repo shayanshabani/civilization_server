@@ -82,10 +82,10 @@ public class PlayGame {
                         nextTurn = false;
                 }
                 else if (input.trim().equals("city menu")) {
-                    //cityMenu.run(scanner);
+                    cityMenu.run(scanner, username);
                 }
                 else if (input.trim().equals("research panel")) {
-                    //researchMenu.run(scanner);
+                    researchMenu.run(scanner, username);
                 }
                 else if (input.trim().equals("user panel")) {
                     //userPanel.run(scanner);
