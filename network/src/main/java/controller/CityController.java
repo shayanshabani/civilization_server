@@ -235,5 +235,19 @@ public class CityController {
         return null;
     }
 
+    public Response userCities(Request request) {
+        Response response = new Response();
+        String username = request.getParameters().get("username");
+        User user = UsersController.getInstance().getUserByUsername(username);
+        ArrayList<String> notifications = new ArrayList<>();
+        int index = 1;
+        for (City city : user.getCities()) {
+            notifications.add(index + "- " + city.getName());
+            index++;
+        }
+        response.setNotifications(notifications);
+        return response;
+    }
+
 
 }

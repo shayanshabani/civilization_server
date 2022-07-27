@@ -37,7 +37,21 @@ public class NetworkController {
             dataOutputStream.writeUTF(output);
             dataOutputStream.flush();
             String input = dataInputStream.readUTF();
-            return new Response().fromJson(input);
+            Response response = new Response().fromJson(input);
+            if (request.getMenu().equals("play game") && request.getAction().equals("show map") && response.getStatusCode().equals("fuck you")) {
+                StringBuilder stringBuilder = new StringBuilder();
+                stringBuilder.append(response.getMessage());
+                for (int i = 0; i < 99; i++) {
+                    input = dataInputStream.readUTF();
+                    response = new Response().fromJson(input);
+                    stringBuilder.append(response.getMessage());
+                }
+                System.out.println(stringBuilder);
+                response = new Response();
+                response.setMessage("fuck");
+                return response;
+            }
+            return response;
         } catch (IOException e) {
             e.printStackTrace();
         }

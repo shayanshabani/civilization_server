@@ -250,10 +250,10 @@ public class PlayGame {
                     parameters.put("username", username);
                     request.setParameters(parameters);
                     Response response = NetworkController.getInstance().sendRequest(request);
-                    for (String notification : response.getNotifications()) {
-                        System.out.println(notification);
-                    }
-                } else if (input.trim().equals("show players")) {
+                    System.out.println(response.getMessage());
+                }
+
+                else if (input.trim().equals("show players")) {
                     Request request = new Request();
                     request.setMenu("play game");
                     request.setAction("show players");

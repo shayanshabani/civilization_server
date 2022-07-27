@@ -32,30 +32,28 @@ public class CityMenu {
             }
             // show player cities
             else if (cityInput.equals("user cities")) {
-//                if (user.getCities() != null && user.getCities().size() > 0) {
-//                    int index = 1;
-//                    for (City city : user.getCities()) {
-//                        System.out.println(index + "- " + city.getName());
-//                        index++;
-//                    }
-//                    while (true) {
-//                        cityInput = scanner.nextLine();
-//                        if (cityInput.equals("city exit")) {
-//                            System.out.println("back to play game");
-//                            return;
-//                        } else if (Pattern.matches("[0-9]+", cityInput)) {
-//                            index = Integer.parseInt(cityInput);
-////                            if (index >= 1 && index <= user.getCities().size()) {
-////                                cityPage(user.getCities().get(index - 1), user, scanner);
-////                            } else
-////                                System.out.println("invalid number");
-//                        }
-//                        else
-//                            System.out.println("invalid command");
-//                    }
-//                }
-//                else
-//                    System.out.println("user do not have any city!");
+                Request request = new Request();
+                request.setMenu("city menu");
+                request.setAction("user cities");
+                Response response = NetworkController.getInstance().sendRequest(request);
+                for (String notification : response.getNotifications()) {
+                    System.out.println(notification);
+                }
+                int max = Integer.parseInt(response.getParameters().get("max"));
+                while (true) {
+                    cityInput = scanner.nextLine();
+                    if (cityInput.equals("city exit")) {
+                        System.out.println("back to play game");
+                        return;
+                    } else if (Pattern.matches("[0-9]+", cityInput)) {
+                        int index = Integer.parseInt(cityInput);
+                           if (index >= 1 && index <= max) {
+                               cityPage(index - 1, username, scanner);
+                           } else
+                               System.out.println("invalid number");
+                    } else
+                        System.out.println("invalid command");
+                }
             }
             // show all cities in the game
             else if (cityInput.equals("show all cities")) {
@@ -79,9 +77,9 @@ public class CityMenu {
         }
     }
 
-    public void cityPage(String nameOfCity, String username, Scanner scanner) {
+    public void cityPage(int indexOfCity, String username, Scanner scanner) {
         String cityInput;
-        System.out.println("you are in the city page of : " + nameOfCity);
+        System.out.println("you are in the city page");
         while (true) {
             cityInput = scanner.nextLine();
             if (cityInput.trim().equals("city exit")) {
@@ -93,11 +91,11 @@ public class CityMenu {
                 Request request = new Request();
                 HashMap<String, String> parameters = new HashMap<>();
                 parameters.put("username", username);
-                parameters.put("name of city", nameOfCity);
+                parameters.put("index of city", String.valueOf(indexOfCity));
+
                 request.setParameters(parameters);
                 Response response = NetworkController.getInstance().sendRequest(request);
                 int max = Integer.parseInt(response.getParameters().get("max"));
-                int indexOfCity = Integer.parseInt(response.getParameters().get("index of city"));
                 for (String notification : response.getNotifications()) {
                     System.out.println(notification);
                 }

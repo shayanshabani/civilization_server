@@ -908,8 +908,10 @@ public class GameController {
         //first top sides of left tiles of game board
         StringBuilder stringBuilder = new StringBuilder();
         for (int j = 0; j < map.getWidth(); j++)
-            stringBuilder.append("   ").append(mapController.riverFinder(map.getTileBoard()[0][j], 0)).append("              ");
-        stringBuilder.append("");
+            stringBuilder.append("   ")
+                    .append(mapController.riverFinder(map.getTileBoard()[0][j], 0))
+                    .append("              ");
+        stringBuilder.append("\n");
         notifications.add(stringBuilder.toString());
 
         //print the game board

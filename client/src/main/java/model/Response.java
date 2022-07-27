@@ -45,7 +45,6 @@ public class Response {
     }
 
     public Response fromJson(String json) {
-        System.out.println(json);
         return new Gson().fromJson(json, Response.class);
     }
 
