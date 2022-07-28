@@ -31,6 +31,9 @@ public class CityMenu {
                 Request request = new Request();
                 request.setMenu("city menu");
                 request.setAction("user cities");
+                HashMap<String, String> parameters = new HashMap<>();
+                parameters.put("username", username);
+                request.setParameters(parameters);
                 Response response = NetworkController.getInstance().sendRequest(request);
                 for (String notification : response.getNotifications()) {
                     System.out.println(notification);
@@ -161,6 +164,8 @@ public class CityMenu {
                     parameters = new HashMap<>();
                     parameters.put("index", String.valueOf(numberOfProduct));
                     parameters.put("cheat", String.valueOf(false));
+                    parameters.put("username", username);
+                    parameters.put("index of city", String.valueOf(indexOfCity));
                     request.setParameters(parameters);
 
                     response = NetworkController.getInstance().sendRequest(request);
@@ -180,6 +185,8 @@ public class CityMenu {
                     parameters = new HashMap<>();
                     parameters.put("index", String.valueOf(index));
                     parameters.put("cheat", String.valueOf(true));
+                    parameters.put("username", username);
+                    parameters.put("index of city", String.valueOf(indexOfCity));
                     request.setParameters(parameters);
 
                     response = NetworkController.getInstance().sendRequest(request);

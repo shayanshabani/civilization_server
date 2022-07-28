@@ -135,7 +135,11 @@ public class ClientHandler extends Thread{
                         if (Boolean.parseBoolean(response.getParameters().get("valid"))) {
                             //set players in receiver
                             receiver.setPlayers(new Gson().fromJson(response.getParameters().get("players"), new TypeToken<List<User>>(){}.getType()));
-                            MapController.getInstance().firstSetOfSettlers(receiver.getPlayers(), ServerController.getInstance().getMap());
+//                            for (User player : receiver.getPlayers()) {
+//                                System.out.println(player.getUsername());
+//                            }
+                            MapController.getInstance().firstSetOfSettlers(receiver.getPlayers(), ServerController.getInstance().getMap(), user, UsersController.getInstance().getUserByUsername("ali"));
+                            System.out.println(showMap(user));
                             response.getParameters().remove("players");
                             //initialize client handler of players
                             LinkedList<ClientHandler> clientHandlers = new LinkedList<>();
@@ -389,6 +393,7 @@ public class ClientHandler extends Thread{
     }
 
     private String leftTilesUnit(int i){
+        System.out.println(map);
         String ANSI_COLOR;
         StringBuilder stringBuilder = new StringBuilder();
         //units on the left tiles and top sides of right tiles

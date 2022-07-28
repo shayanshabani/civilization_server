@@ -76,7 +76,7 @@ public class RegisterMenu {
                 String password = matcher.group("password");
                 Request request = new Request();
                 request.setMenu("register menu");
-                request.setAction("sign up");
+                request.setAction("signup");
                 HashMap<String, String> parameters = new HashMap<>();
                 parameters.put("username", username);
                 parameters.put("nickname", nickname);

@@ -159,11 +159,19 @@ public class CityController {
         User user = UsersController.getInstance().getUserByUsername(username);
         int index = Integer.parseInt(request.getParameters().get("index of city"));
         City city = user.getCities().get(index);
-
-        city.setCurrentProduction(city.getProducts().get(index - 1));
-        city.setProductStatus(true);
-        city.setProductTurnLeft(city.getCurrentProduction().getTurnCost());
-
+        int indexOfProduction = Integer.parseInt(request.getParameters().get("index"));
+        boolean cheat = Boolean.parseBoolean(request.getParameters().get("cheat"));
+        if (cheat) {
+            city.setCurrentProduction(city.getProducts().get(indexOfProduction - 1));
+            city.setProductStatus(true);
+            city.setProductTurnLeft(1);
+            GameController.getInstance().cityTurnProducts(user);
+        }
+        else {
+            city.setCurrentProduction(city.getProducts().get(indexOfProduction - 1));
+            city.setProductStatus(true);
+            city.setProductTurnLeft(city.getCurrentProduction().getTurnCost());
+        }
         response.setMessage("product is being produced...!");
         return response;
     }
@@ -246,6 +254,9 @@ public class CityController {
             notifications.add(index + "- " + city.getName());
             index++;
         }
+        HashMap<String, String> parameters = new HashMap<>();
+        parameters.put("max", String.valueOf(user.getCities().size()));
+        response.setParameters(parameters);
         response.setNotifications(notifications);
         return response;
     }

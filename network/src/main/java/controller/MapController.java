@@ -197,15 +197,17 @@ public class MapController {
     }
 
 
-    public void firstSetOfSettlers(ArrayList<User> users, Maps map) {
+    public void firstSetOfSettlers(ArrayList<User> users, Maps map, User user1, User user2) {
+        System.out.println("fuck oufsj;dlkfjal;sdjf");
+        System.out.println(map);
         //user0
-        Settler settler = new Settler("settler", map.getSpecificTile(3, 5), 100, 1, 1, 1, 2, 0, 0, null, users.get(0), 0, 0);
-        users.get(0).addUnit(settler);
+        Settler settler = new Settler("settler", map.getSpecificTile(3, 5), 100, 1, 1, 1, 2, 0, 0, null, user1, 0, 0);
+        user1.addUnit(settler);
         map.getSpecificTile(3, 5).setCivilianUnit(settler);
         map.getSpecificTile(3, 5).setCivilianUnitExists(true);
         //user1
-        settler = new Settler("settler", map.getSpecificTile(17, 13), 100, 1, 1, 1, 2, 0, 0, null, users.get(1), 0, 0);
-        users.get(1).addUnit(settler);
+        settler = new Settler("settler", map.getSpecificTile(17, 13), 100, 1, 1, 1, 2, 0, 0, null, user2, 0, 0);
+        user2.addUnit(settler);
         map.getSpecificTile(17, 13).setCivilianUnit(settler);
         map.getSpecificTile(17, 13).setCivilianUnitExists(true);
         if (users.size() <= 2)return;

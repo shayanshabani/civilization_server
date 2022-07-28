@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 public class ServerController {
     private HashMap<Integer, String> userPorts = new HashMap<>();
-    private Maps map;
+    private Maps map = UsersController.getInstance().readFromJsonMap();;
     private static ServerController serverController;
 
     public static ServerController getInstance() {
@@ -28,7 +28,6 @@ public class ServerController {
 
     public void initGame() {
         UsersController.getInstance().setUsers(UsersController.getInstance().readFromJson());
-        map = UsersController.getInstance().readFromJsonMap();
         TechController.getInstance(UsersController.getInstance().readFromJsonGraph(), UsersController.getInstance().readFromJsonTech());
     }
 

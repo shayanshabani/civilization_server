@@ -292,6 +292,8 @@ public class PlayGame {
 
                 request.setAction("move unit");
                 HashMap<String, String> parameters = new HashMap<>();
+                parameters.put("xOrigin", String.valueOf(xOrigin));
+                parameters.put("yOrigin", String.valueOf(yOrigin));
                 parameters.put("xDestination", matcher.group("x"));
                 parameters.put("yDestination", matcher.group("y"));
                 request.setParameters(parameters);
