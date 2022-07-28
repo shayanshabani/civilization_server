@@ -5,20 +5,12 @@ import com.google.gson.Gson;
 import java.util.HashMap;
 
 public class Request {
-    private User user;
     private String action;
     private String message;
     private String menu;
 
     private HashMap<String, String> parameters = new HashMap<>();
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 
     public String getAction() {
         return action;

@@ -10,13 +10,6 @@ public class Response {
     private String statusCode;
     private String message;
     private HashMap<String, String> parameters = new HashMap<>();
-    private User user;
-    private Tile tile;
-    private Maps maps;
-
-    public Response(){
-
-    }
 
     private ArrayList<String> notifications = new ArrayList<>();
 
@@ -48,14 +41,6 @@ public class Response {
         return new Gson().fromJson(json, Response.class);
     }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
     public ArrayList<String> getNotifications() {
         return notifications;
     }
@@ -64,19 +49,4 @@ public class Response {
         this.notifications = notifications;
     }
 
-    public void setTile(Tile tile){
-        this.tile = tile;
-    }
-
-    public Tile getTile() {
-        return tile;
-    }
-
-    public Maps getMaps() {
-        return maps;
-    }
-
-    public void setMaps(Maps maps) {
-        this.maps = maps;
-    }
 }

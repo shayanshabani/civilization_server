@@ -10,16 +10,13 @@ import java.util.regex.*;
 
 public class PlayGame {
     //private final ArrayList<User> players;
-    private Maps map;
     private Matcher matcher;
 
     private int role;
     private int height;
     private int width;
-    private ArrayList<Tile> firstTurnsSettlers;
     private CityMenu cityMenu;
     private ResearchMenu researchMenu;
-    private ArrayList<Technology> technologies;
 
     private int[][] graph;
 

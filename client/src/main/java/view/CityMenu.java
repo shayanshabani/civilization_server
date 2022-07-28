@@ -5,10 +5,6 @@ import controller.NetworkController;
 import view.enums.Colors;
 import model.*;
 import view.enums.RegexEnums;
-import model.City;
-import model.Product;
-import model.Tile;
-import model.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -272,7 +268,7 @@ public class CityMenu {
 
     }
 
-
+/*
     private void cityInformation(City city) {
         System.out.println(Colors.YELLOW + "Name : " + city.getName());
         System.out.println("Owner : " + city.getOwner().getUsername());
@@ -292,6 +288,8 @@ public class CityMenu {
         }
         System.out.println(Colors.RESET);
     }
+
+ */
 
     private void setCitizen(String username, int indexOfCity, int indexOfTileInOwnerShips, int indexOfCitizen) {
         Request request = new Request();

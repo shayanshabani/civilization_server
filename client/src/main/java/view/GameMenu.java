@@ -76,7 +76,7 @@ public class GameMenu {
         new PlayGame().run(scanner, username2);
     }
     // get the usernames from input
-
+/*
 
     private ArrayList<Technology> better() {
         ArrayList<Technology> technologies = new ArrayList<>();
@@ -651,4 +651,6 @@ public class GameMenu {
         }
         return graph;
     }
+
+ */
 }
